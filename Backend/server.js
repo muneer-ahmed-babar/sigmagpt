@@ -1,13 +1,14 @@
 import OpenAI from 'openai';
+import 'dotenv/config';
 
 const client = new OpenAI({
-  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
+  apiKey: process.env.GEMINI_API_KEY,
+  baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
 });
 
-const response = await client.responses.create({
-  model: 'gpt-5.5',
-  instructions: 'You are a coding assistant that talks like a pirate',
-  input: 'Are semicolons optional in JavaScript?',
+const response = await client.chat.completions.create({
+  model: 'gemini-3.5-flash',
+  messages: [{ role: 'user', content: 'Joke related to computer science' }],
 });
 
-console.log(response.output_text);
+console.log(response.choices[0].message.content);
