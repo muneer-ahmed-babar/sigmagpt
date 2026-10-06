@@ -20,9 +20,10 @@ router.post("/test", async (req, res) => {
     }
 });
 
-// Get all threads, most recently updated first
+// Get all threads (chats), most recently updated first
 router.get("/thread", async (req, res) => {
     try {
+        // descending order: most recently updated first
         const threads = await Thread.find({}).sort({ updatedAt: -1 });
         res.json(threads);
     } catch (err) {
@@ -31,7 +32,7 @@ router.get("/thread", async (req, res) => {
     }
 });
 
-// Get all messages of one thread
+// Get all messages of one thread (one chat) by threadId
 router.get("/thread/:threadId", async (req, res) => {
     const { threadId } = req.params;
 
