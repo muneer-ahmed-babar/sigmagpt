@@ -1,6 +1,7 @@
 import express from "express";
 import Thread from "../models/Thread.js";
 import getGeminiAPIResponse from "../utils/gemini.js";
+import getGroqAPIResponse from "../utils/groq.js";
 
 const router = express.Router();
 
@@ -91,9 +92,10 @@ router.post("/chat", async (req, res) => {
             thread.messages.push({ role: "user", content: message });
         }
 
-        const assistantReply = await getGeminiAPIResponse(message);
+        // const assistantReply = await getGeminiAPIResponse(message);
+        const assistantReply = await getGroqAPIResponse(message);
 
-        // Gemini failed (503, 429...): don't save an empty reply
+        // Groq failed (503, 429...): don't save an empty reply
         if (!assistantReply) {
             return res.status(502).json({ error: "AI service failed, please try again" });
         }
